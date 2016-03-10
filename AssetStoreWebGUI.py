@@ -138,19 +138,21 @@ class myHandler(BaseHTTPRequestHandler):
         return html
     
     def GenInvoiceHtml(self, client, invoiceNumbers):
-        html = '<h2>Verify invoice</h2>Enter comma separated invoice numbers:'
+        html = '<h2>Verify invoice</h2>Enter comma separated invoice numbers or order numbers:'
         html += '<input type=\"text\" name=\"invoiceNumbers\" value=\"%s\" size=\"13\">'%invoiceNumbers
         html += '<input type=\"submit\" value=\"Verify\">'
         if len(invoiceNumbers) > 0:
-            html += '<table><tr><th>Invoice #</th><th>Package</th><th>Purchase</th><th>Refunded?</th></tr>'
+            html += '<table><tr><th>Invoice #</th><th>Package</th><th>Purchase Date</th><th>Purchase Count</th><th>Purchase Cost</th><th>Status?</th></tr>'
             invoiceNumbersArray = invoiceNumbers.split(',')
             invoiceNumbersInfo = client.VerifyInvoice(invoiceNumbersArray)
             for value in invoiceNumbersInfo:
-                html += '<tr><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>'%(
+                html += '<tr><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>'%(
                     value.GetInvoiceNumber(),
                     value.GetPackageName(),
                     datetime.fromtimestamp(value.GetPurchaseDate()).strftime('%d %B %Y'),
-                    'Yes' if value.IsRefunded() else 'No')
+                    str(value.GetPurchaseCount()),
+                    str(value.GetPurchaseCost()),
+                    value.GetStatusCode())
             html += '</table>'
         return html
     

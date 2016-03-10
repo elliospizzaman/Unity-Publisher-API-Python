@@ -1,3 +1,5 @@
+(This fork is temporary and should only exist while I make the updates needed for it to work with changes that ahve occurred since it's last official update.)
+
 # Unity-Publisher-API-Python
 A Python client for Unity Asset Store publisher interface
 
